@@ -1,0 +1,1 @@
+export const jobs = await fetch('../data.json').then(res => res.json())
