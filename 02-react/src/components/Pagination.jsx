@@ -1,17 +1,20 @@
-function createPages(totalPages) {
-    const pages = []
 
-    for (let i = 1; i <= totalPages; i++) {
-        pages.push(i)
+function Pagination({ totalPages, currentPage, handlePageChange }) {
+    const pages = Array.from({ length: totalPages }, (_, i) => i + 1)
+
+    const handleClick = (event) => {
+        event.preventDefault();
+        const page = Number(event.currentTarget.dataset.page);
+
+        if (page !== currentPage) {
+            handlePageChange(page);
+        }
     }
-    return pages;
-}
 
-function Pagination({ totalPages ,currentPage, handlePageChange }) {
-    const pages = createPages(totalPages);
-
-    const handleClick = (page) => {
-        handlePageChange(page);
+    const buildPageUrl = (page) => {
+        const url = new URL(window.location);
+        url.searchParams.set('page', page);
+        return `${url.pathname}?${url.searchParams.toString()}`;
     }
 
     return (
@@ -19,14 +22,16 @@ function Pagination({ totalPages ,currentPage, handlePageChange }) {
             {
                 pages.map((page) =>
                 (
-                    <button
+                    <a
                         key={page}
+                        data-page={page}
+                        href={buildPageUrl(page)}
                         className={`button-page ${currentPage === page ? 'is-active' : ''}`}
                         disabled={currentPage === page}
-                        onClick={() => handleClick(page)}
+                        onClick={handleClick}
                     >
                         {page}
-                    </button >
+                    </a >
                 ))
             }
         </div>

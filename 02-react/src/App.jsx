@@ -1,18 +1,19 @@
-import Jobs from './components/Jobs'
-import Header from './components/Header'
-import jobs from './data/Data.json'
-import Footer from './components/Footer'
+import { Header } from './components/Header'
+import { HomePage } from "./pages/Home.jsx"
+import { Footer } from './components/Footer'
+import { SearchPage } from './pages/Search.jsx'
+import { NotFoundPage } from './pages/404.jsx'
+import { useRouter } from './hooks/useRouter.jsx'
+import { Route } from './components/Route.jsx'
 
-
-function App() {
-
+export function App() {
   return (
     <>
       <Header />
-      <Jobs jobs={jobs} />
+      <Route path="/" component={HomePage} />
+      <Route path="/search" component={SearchPage} />
+      <Route path="*" component={NotFoundPage} />
       <Footer />
     </>
   )
 }
-
-export default App

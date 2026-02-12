@@ -1,20 +1,20 @@
-function Header() {
+import { Link } from "./Link";
+
+export function Header() {
     return (
         <header className="header">
-            <h2 className="header-title">DevJobs</h2>
+            <Link href="/"><h2 className="header-title">DevJobs</h2></Link>
 
             <nav className="header-nav">
-                <a href="./index.html">Inicio</a>
-                <a href="#">Empleos</a>
+                <Link href="/">Inicio</Link>
+                <Link href="/search">Empleos</Link>
             </nav>
 
-            <div className="header-actions">
+            {/* <div className="header-actions">
                 <a href="#">Subir CV</a>
                 <a href="#">Iniciar sesión</a>
-            </div>
+            </div> */}
 
         </header>
     )
 }
-
-export default Header
