@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "./useRouter";
+import { useSearchParams } from "react-router";
 
 /**
  * Custom hook encargado de manejar la inicialización y actualización de los filtros.
@@ -11,20 +12,18 @@ import { useRouter } from "./useRouter";
  * @returns { _, jobs, loading, totalPages, onSearch, onSearchWithText, currentPage, handlePageChange} 
  */
 export function useJobFilter({ JOBS_PER_PAGE }) {
-  const [filtered, setFiltered] = useState(() => {
-    const params = new URLSearchParams(window.location.search)
+  const [searchParams, setSearchParams] = useSearchParams()
 
+  const [filtered, setFiltered] = useState(() => {
+    console.log("ENTRA")
     return {
-      technology: params.get("technology") || "",
-      ubication: params.get("type") || "",
-      experience: params.get("level") || ""
+      technology: searchParams.get("technology") || "",
+      ubication: searchParams.get("type") || "",
+      experience: searchParams.get("level") || ""
     }
   })
-  const [inputText, setInputText] = useState(() => {
-    const params = new URLSearchParams(window.location.search)
 
-    return params.get("text") || ""
-  })
+  const [inputText, setInputText] = useState(() => searchParams.get("text") ?? "")
 
   const [loading, setLoading] = useState(true);
   const [total, setTotal] = useState(0);
@@ -38,7 +37,7 @@ export function useJobFilter({ JOBS_PER_PAGE }) {
   });
 
   const { navigateTo } = useRouter();
-
+  /** LLAMADA A LA API */
   useEffect(() => {
     async function getJobs() {
       try {
@@ -72,25 +71,45 @@ export function useJobFilter({ JOBS_PER_PAGE }) {
     getJobs();
   }, [filtered, inputText, currentPage]);
 
+  /** ACTUALIZACIÓN DE LA URL */
   useEffect(() => {
-    const params = new URLSearchParams();
 
-    if (inputText) params.append("text", inputText);
-    if (filtered.technology) params.append("technology", filtered.technology);
-    if (filtered.ubication) params.append("type", filtered.ubication);
-    if (filtered.experience) params.append("level", filtered.experience);
+    setSearchParams((params) => {
 
-    if (currentPage > 1) {
-      params.append("page", currentPage);
-    }
+      if (inputText) {
+        params.set("text", inputText)
+      } else {
+        params.delete("text")
+      }
 
-    const newUrl = params.toString()
-      ? `${window.location.pathname}?${params.toString()}`
-      : window.location.pathname;
+      if (filtered.technology) {
+        params.set("technology", filtered.technology)
+      } else {
+        params.delete("technology")
+      }
 
-    navigateTo(newUrl);
+      if (filtered.ubication) {
+        params.set("type", filtered.ubication)
+      } else {
+        params.delete("type")
+      }
 
-  }, [filtered, inputText, currentPage, navigateTo]);
+      if (filtered.experience) {
+        params.set("level", filtered.experience)
+      } else {
+        params.delete("level")
+      }
+
+      if (currentPage > 1) {
+        params.set("page", currentPage);
+      }
+
+      return params
+    })
+
+
+
+  }, [filtered, inputText, currentPage]);
 
   const totalPages = Math.ceil(total / JOBS_PER_PAGE);
 
@@ -116,7 +135,8 @@ export function useJobFilter({ JOBS_PER_PAGE }) {
     onSearch,
     onSearchWithText,
     currentPage,
-    handlePageChange
+    handlePageChange,
+    filtered
   }
 
 }

@@ -8,11 +8,13 @@ import { useSearchForm } from "../hooks/useSearchForm";
  * @param {onSearch, onSearchWithText} param0 
  * @returns Devulve una interfaz de usuario con un formulario de búsqueda y filtros.
  */
-function Form({ initialText, onSearch, onSearchWithText }) {
+function Form({ initialText, onSearch, onSearchWithText, filtered }) {
     const idText = useId()
     const idTechnology = useId()
     const idUbication = useId()
     const idExperience = useId()
+
+    // console.log(searchParams.get("technology"))
 
     const {
         handleSubmit,
@@ -46,7 +48,15 @@ function Form({ initialText, onSearch, onSearchWithText }) {
 
                     </div>
                     <div className="search-filters">
-                        <select name={idTechnology} id="filter-technology">
+                        <select
+                            value={filtered.technology}
+                            name={idTechnology}
+                            id="filter-technology"
+                            onChange={(e) => onSearch({
+                                ...filtered,
+                                technology: e.target.value
+                            })}
+                        >
                             <option value="">Tecnologia</option>
                             <option value="javascript">JavaScript</option>
                             <option value="typescript">TypeScript</option>
@@ -57,7 +67,11 @@ function Form({ initialText, onSearch, onSearchWithText }) {
                             <option value="node">Node</option>
                         </select>
 
-                        <select name={idUbication} id="filter-ubication">
+                        <select
+                            value={filtered.ubication}
+                            name={idUbication}
+                            id="filter-ubication"
+                        >
                             <option value="">Ubicación</option>
                             <option value="remoto">Remoto</option>
                             <option value="cdmx">Ciudad de Mexico</option>

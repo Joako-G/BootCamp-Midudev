@@ -1,4 +1,6 @@
+import { Link } from 'react-router'
 import { useState } from "react"
+import styles from "./Job.module.css"
 
 function Job({ job }) {
     const [isApplied, setIsApplied] = useState(false)
@@ -20,11 +22,23 @@ function Job({ job }) {
             data-experience={nivel}
         >
             <div>
-                <h3> {titulo} </h3>
+                <h3>
+                    <Link
+                        className={styles.title}
+                        to={`/jobs/${job.id}`}>
+                        {titulo}
+                    </Link>
+                </h3>
                 <small> {empresa} | {ubicacion} </small>
                 <p> {descripcion} </p>
             </div>
-            <button onClick={handleClick} className={` button-apply-job ${applied}`} disabled={isDisabled}> {btnText} </button>
+            <div className="actions">
+                <Link to={`/jobs/${job.id}`} className={styles.details}>
+                    Ver detalles
+                </Link>
+                <button onClick={handleClick} className={` button-apply-job ${applied}`} disabled={isDisabled}> {btnText} </button>
+            </div>
+
         </article>
     )
 }
