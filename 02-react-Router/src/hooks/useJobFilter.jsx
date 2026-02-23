@@ -15,7 +15,6 @@ export function useJobFilter({ JOBS_PER_PAGE }) {
   const [searchParams, setSearchParams] = useSearchParams()
 
   const [filtered, setFiltered] = useState(() => {
-    console.log("ENTRA")
     return {
       technology: searchParams.get("technology") || "",
       ubication: searchParams.get("type") || "",

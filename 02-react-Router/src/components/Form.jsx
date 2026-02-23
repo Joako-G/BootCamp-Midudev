@@ -69,6 +69,10 @@ function Form({ initialText, onSearch, onSearchWithText, filtered }) {
 
                         <select
                             value={filtered.ubication}
+                            onChange={(e) => onSearch({
+                                ...filtered,
+                                ubication: e.target.value
+                            })}
                             name={idUbication}
                             id="filter-ubication"
                         >
@@ -86,7 +90,14 @@ function Form({ initialText, onSearch, onSearchWithText, filtered }) {
                             <option value="guadalajara">Guadalajara</option>
                         </select>
 
-                        <select name={idExperience} id="filter-experience">
+                        <select
+                            value={filtered.experience}
+                            onChange={(e) => onSearch({
+                                ...filtered,
+                                experience: e.target.value
+                            })}
+                            name={idExperience}
+                            id="filter-experience">
                             <option value="">Nivel de experiencia</option>
                             <option value="junior">Junior</option>
                             <option value="mid">Mid</option>

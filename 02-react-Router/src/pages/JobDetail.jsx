@@ -2,10 +2,11 @@ import { useEffect, useState } from "react"
 import { useParams, useNavigate } from "react-router"
 import snarkdown from 'snarkdown'
 import styles from "./JobDetail.module.css"
+import { useAuth } from "../hooks/useAuth"
 
 function JobSection({ title, content }) {
     const html = snarkdown(content ?? "")
-    console.log(html)
+    
     return (
         <section className={styles.section}>
             <h2 className={styles.sectionTitle}> {title} </h2>
@@ -13,6 +14,43 @@ function JobSection({ title, content }) {
                 <div dangerouslySetInnerHTML={{ __html: html }} />
             </div>
         </section>
+    )
+}
+
+function Breadcrumb({ job }) {
+    return (
+        < nav className={styles.breadcrumb} >
+            {/* Breadcrumb */}
+            <nav className={styles.breadcrumb}>
+                <a href="/search" className={styles.breadcrumbLink}>
+                    Empleos
+                </a>
+                <span className={styles.breadcrumbSeparator}>/</span>
+                <span className={styles.breadcrumbTitle}>{job.titulo}</span>
+            </nav>
+            <a href="/search" className={styles.breadcrumbLink}>
+                Empleos
+            </a>
+            <span className={styles.breadcrumbSeparator}>/</span>
+            <span className={styles.breadcrumbTitle}>{job.titulo}</span>
+        </nav >
+    )
+}
+
+function HeaderJobDetail({ job }) {
+    const { isLogin } = useAuth()
+
+    return (
+        < header className={styles.header} >
+            {/* Header principal */}
+            <div>
+                <h1 className={styles.title}>{job.titulo}</h1>
+                <p className={styles.meta}> {job.empresa} - {job.ubicacion} </p>
+            </div>
+            <button disabled={!isLogin} className={styles.applyButton}>
+                {isLogin ? "Aplicar a esta oferta" : "Inicia sesión para aplicar"}
+            </button>
+        </header >
     )
 }
 
@@ -24,12 +62,10 @@ export default function JobDetail() {
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
 
-
     useEffect(() => {
         if (!id) return
 
         const controller = new AbortController()
-
 
         const fetchJob = async () => {
             try {
@@ -87,28 +123,8 @@ export default function JobDetail() {
 
     return (
         <div className={styles.container}>
-            {/* Breadcrumb */}
-            <nav className={styles.breadcrumb}>
-                <a href="/search" className={styles.breadcrumbLink}>
-                    Empleos
-                </a>
-                <span className={styles.breadcrumbSeparator}>/</span>
-                <span className={styles.breadcrumbTitle}>{job.titulo}</span>
-            </nav>
-
-            {/* Header principal */}
-            <header className={styles.header}>
-                <div>
-                    <h1 className={styles.title}>{job.titulo}</h1>
-                    <p className={styles.meta}> {job.empresa} - {job.ubicacion} </p>
-                </div>
-                {/* <div className={styles.meta}>
-                    <p className={styles.company}>{job.empresa}</p>
-                    <p className={styles.location}>{job.ubicacion}</p>
-                </div> */}
-
-                <button className={styles.applyButton}>Aplicar a esta oferta</button>
-            </header>
+            <Breadcrumb job={job} />
+            <HeaderJobDetail job={job} />
 
             {/* Aquí irán las secciones de contenido */}
             <JobSection title="Descripción del puesto" content={job.descripcion} />

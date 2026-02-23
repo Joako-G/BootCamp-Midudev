@@ -10,6 +10,7 @@ const JobDetail = lazy(() => import('./pages/JobDetail.jsx'))
 const NotFoundPage = lazy(() => import('./pages/404.jsx'))
 
 export function App() {
+
   return (
     <>
       <Header />
