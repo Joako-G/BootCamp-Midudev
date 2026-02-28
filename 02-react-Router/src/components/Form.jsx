@@ -1,5 +1,6 @@
 import { useId } from "react";
 import { useSearchForm } from "../hooks/useSearchForm";
+import styles from "./Form.module.css"
 
 /**
  * Este componente esta encargado de renderizar el formulario de busqueda
@@ -24,11 +25,11 @@ function Form({ initialText, onSearch, onSearchWithText, filtered }) {
 
     return (
         <>
-            <section className="jobs-search">
+            <section className={styles.jobsSearch}>
                 <h1 className="search-title">Encuentra tu próximo trabajo</h1>
                 <p className="search-text">Explora miles de oportunidades en el sector tecnológico</p>
                 <form id="employee-search-form" role="search" onChange={handleSubmit}>
-                    <div className="form-search-job">
+                    <div className={styles.formSearchJob}>
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
                             className="icon icon-tabler icons-tabler-outline icon-tabler-search">
@@ -47,7 +48,7 @@ function Form({ initialText, onSearch, onSearchWithText, filtered }) {
                         />
 
                     </div>
-                    <div className="search-filters">
+                    <div className={styles.searchFilters}>
                         <select
                             value={filtered.technology}
                             name={idTechnology}

@@ -21,7 +21,7 @@ export default function SearchPage() {
 
   return (
     <>
-      <main>
+      <main className='search'>
         <Form initialText={inputText} onSearch={onSearch} onSearchWithText={onSearchWithText} filtered={filtered} />
         <section>
           {

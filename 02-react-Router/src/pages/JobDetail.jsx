@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react"
-import { useParams, useNavigate } from "react-router"
+import { useParams, useNavigate, NavLink } from "react-router"
 import snarkdown from 'snarkdown'
 import styles from "./JobDetail.module.css"
-import { useAuth } from "../hooks/useAuth"
+import { useAuthStore } from "../store/AuthStore"
+import { useFavoritesStore } from "../store/FavoritesStore"
 
 function JobSection({ title, content }) {
     const html = snarkdown(content ?? "")
-    
+
     return (
         <section className={styles.section}>
             <h2 className={styles.sectionTitle}> {title} </h2>
@@ -22,37 +23,60 @@ function Breadcrumb({ job }) {
         < nav className={styles.breadcrumb} >
             {/* Breadcrumb */}
             <nav className={styles.breadcrumb}>
-                <a href="/search" className={styles.breadcrumbLink}>
+                <NavLink
+                    className={({ isActive }) => isActive ? "nav-link-active" : ""}
+                    to="/search">
                     Empleos
-                </a>
+                </NavLink>
                 <span className={styles.breadcrumbSeparator}>/</span>
                 <span className={styles.breadcrumbTitle}>{job.titulo}</span>
             </nav>
-            <a href="/search" className={styles.breadcrumbLink}>
-                Empleos
-            </a>
-            <span className={styles.breadcrumbSeparator}>/</span>
-            <span className={styles.breadcrumbTitle}>{job.titulo}</span>
         </nav >
     )
 }
 
 function HeaderJobDetail({ job }) {
-    const { isLogin } = useAuth()
-
     return (
-        < header className={styles.header} >
-            {/* Header principal */}
-            <div>
+        <>
+            < header className={styles.header} >
+                {/* Header principal */}
                 <h1 className={styles.title}>{job.titulo}</h1>
                 <p className={styles.meta}> {job.empresa} - {job.ubicacion} </p>
+
+            </header >
+            <div className={styles.buttons}>
+                <DetailApplyButton />
+                <DetailFavoriteButton jobId={job.id} />
             </div>
-            <button disabled={!isLogin} className={styles.applyButton}>
-                {isLogin ? "Aplicar a esta oferta" : "Inicia sesión para aplicar"}
-            </button>
-        </header >
+        </>
+
     )
 }
+
+function DetailApplyButton() {
+    const { isLogin } = useAuthStore()
+
+    return (
+        <button disabled={!isLogin} className={styles.applyButton}>
+            {isLogin ? "Aplicar a esta oferta" : "Inicia sesión para aplicar"}
+        </button>
+    )
+}
+function DetailFavoriteButton({ jobId }) {
+    const { isLogin } = useAuthStore()
+    const { toggleFavorite, isFavorite } = useFavoritesStore()
+
+    return (
+        <button
+            disabled={!isLogin}
+            onClick={() => toggleFavorite(jobId)}
+            aria-label={isFavorite(jobId) ? "Remove from favorites" : "Add to favorites"}
+        >
+            {isFavorite(jobId) ? '❤️' : '🤍'}
+        </button>
+    )
+}
+
 
 export default function JobDetail() {
     const { id } = useParams()
