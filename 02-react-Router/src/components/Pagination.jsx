@@ -1,3 +1,4 @@
+import styles from './Pagination.module.css'
 
 function Pagination({ totalPages, currentPage, handlePageChange }) {
     const pages = Array.from({ length: totalPages }, (_, i) => i + 1)
@@ -18,7 +19,7 @@ function Pagination({ totalPages, currentPage, handlePageChange }) {
     }
 
     return (
-        <div className="pagination">
+        <div className={styles.pagination}>
             {
                 pages.map((page) =>
                 (
@@ -26,7 +27,7 @@ function Pagination({ totalPages, currentPage, handlePageChange }) {
                         key={page}
                         data-page={page}
                         href={buildPageUrl(page)}
-                        className={`button-page ${currentPage === page ? 'is-active' : ''}`}
+                        className={`button-page ${currentPage === page ? styles.isActive : ''}`}
                         disabled={currentPage === page}
                         onClick={handleClick}
                     >

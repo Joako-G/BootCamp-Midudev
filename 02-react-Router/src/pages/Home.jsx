@@ -1,5 +1,6 @@
 import backgroundImage from '../assets/image.jpg'
 import { useRouter } from '../hooks/useRouter'
+import styles from './Home.module.css'
 
 export default function HomePage() {
     const { navigateTo } = useRouter()
@@ -39,7 +40,7 @@ export default function HomePage() {
 
                         <input
                             name='search'
-                            type="text"
+                            type="search"
                             placeholder="Buscar empleos por titulo, habilidad o empresas"
                         />
                         <button type="submit">Buscar</button>
@@ -47,7 +48,7 @@ export default function HomePage() {
                 </form>
             </section>
 
-            <section className="section-cards">
+            <section className={styles.section}>
                 <header>
                     <h2>¿Porque DevJobs?</h2>
                     <p>Porque somos la plataforma de empleo especializada en desarrolladores.</p>

@@ -2,6 +2,7 @@ import { Jobs } from '../components/Jobs'
 import Form from '../components/Form'
 import Pagination from '../components/Pagination'
 import { useJobFilter } from '../hooks/useJobFilter.jsx'
+import styles from './Search.module.css'
 
 export default function SearchPage() {
   const JOBS_PER_PAGE = 4;
@@ -19,13 +20,16 @@ export default function SearchPage() {
     filtered
   } = useJobFilter({ JOBS_PER_PAGE })
 
+
   return (
     <>
       <main className='search'>
         <Form initialText={inputText} onSearch={onSearch} onSearchWithText={onSearchWithText} filtered={filtered} />
-        <section>
+        <section className={styles.searchResults}>
+          <h2 style={{ textAlign: 'center' }}>Resultados de búsqueda</h2>
+
           {
-            loading ? <p>Buscando trabajos...</p> : <Jobs jobs={jobs} />
+            loading ? <p style={{ textAlign: 'center' }}>Buscando trabajos...</p> : <Jobs jobs={jobs} />
           }
         </section>
         <Pagination

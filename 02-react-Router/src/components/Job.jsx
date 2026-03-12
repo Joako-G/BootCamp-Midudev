@@ -12,7 +12,8 @@ function Job({ job }) {
 
     return (
         <article
-            className={styles.jobListingCard}
+            // className={styles.jobListingCard}
+            className='job-listing-card'
             data-technology={technology}
             data-ubication={modalidad}
             data-experience={nivel}

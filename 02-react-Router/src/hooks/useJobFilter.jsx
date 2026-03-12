@@ -54,8 +54,11 @@ export function useJobFilter({ JOBS_PER_PAGE }) {
         params.append("offset", offset)
 
         const queryParams = params.toString()
-        const response = await fetch(`https://jscamp-api.vercel.app/api/jobs?${queryParams}`)
+        // const response = await fetch(`https://jscamp-api.vercel.app/api/jobs?${queryParams}`)
+        const response = await fetch(`https://04-express-ruddy.vercel.app/jobs?${queryParams}`)
         const json = await response.json()
+
+        console.log('JSON: ', json)
 
         setJobs(json.data);
         setTotal(json.total);
@@ -101,13 +104,12 @@ export function useJobFilter({ JOBS_PER_PAGE }) {
 
       if (currentPage > 1) {
         params.set("page", currentPage);
+      } else {
+        params.delete('page')
       }
 
       return params
     })
-
-
-
   }, [filtered, inputText, currentPage]);
 
   const totalPages = Math.ceil(total / JOBS_PER_PAGE);

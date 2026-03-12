@@ -50,7 +50,7 @@ export function Header() {
 }
 
 function LoginButton() {
-    const { isLogin, logout } = useAuthStore()
+    const { isLogin, logout, login } = useAuthStore()
     const { clearFavorite } = useFavoritesStore()
     const navigate = useNavigate()
     const location = useLocation()
